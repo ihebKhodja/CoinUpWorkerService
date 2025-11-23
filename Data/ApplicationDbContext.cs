@@ -8,7 +8,8 @@ namespace CoinUpWorkerService.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        public DbSet<MarketData> MarketData { get; set; }
+        public DbSet<CoinsMarket> CoinsMarket { get; set; }
+        public DbSet<CoinsMarketCategory> CoinsMarketCategory { get; set; }
 
     }
 }

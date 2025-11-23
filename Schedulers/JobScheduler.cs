@@ -1,9 +1,4 @@
 ﻿using CoinUpWorkerService.Jobs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CoinUpWorkerService.Schedulers
 {
@@ -18,24 +13,40 @@ namespace CoinUpWorkerService.Schedulers
             _logger = logger;
         }
 
-        public async Task ScheduleDataCollectionJob(TimeSpan interval)
-        {
-            var timer = new PeriodicTimer(interval);
-
-            while (await timer.WaitForNextTickAsync())
-            {
-                //using var scope = _serviceProvider.CreateScope();
-                //var job = scope.ServiceProvider.GetRequiredService<DataCollectionJob>();
-                //await job.ExecuteAsync();
-                await ScheduleDataCollectionJobOnce();
-
-            }
-        }
+        /// <summary>
+        /// Execute the job once.
+        /// This is called by the Worker.
+        /// </summary>
         public async Task ScheduleDataCollectionJobOnce()
         {
-            using var scope = _serviceProvider.CreateScope();
-            var job = scope.ServiceProvider.GetRequiredService<DataCollectionJob>();
-            await job.ExecuteAsync();
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var job = scope.ServiceProvider.GetRequiredService<DataCollectionJob>();
+
+                _logger.LogInformation("➡️ Exécution du DataCollectionJob...");
+                await job.ExecuteAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ Erreur lors de l’exécution du job");
+            }
+        }
+
+        /// <summary>
+        /// Runs indefinitely every interval, if you want a stand-alone scheduler.
+        /// (Not used by Worker but kept clean & functional)
+        /// </summary>
+        public async Task ScheduleDataCollectionJob(TimeSpan interval, CancellationToken token)
+        {
+            _logger.LogInformation("Scheduler démarré. Intervalle : {Interval}", interval);
+
+            var timer = new PeriodicTimer(interval);
+
+            while (await timer.WaitForNextTickAsync(token) && !token.IsCancellationRequested)
+            {
+                await ScheduleDataCollectionJobOnce();
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-using CoinUpWorkerService;
+﻿using CoinUpWorkerService;
 using CoinUpWorkerService.Data;
 using CoinUpWorkerService.Jobs;
 using CoinUpWorkerService.Schedulers;

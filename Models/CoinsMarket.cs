@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +12,13 @@ namespace CoinUpWorkerService.Models
     {
         public string Id { get; set; } = string.Empty;
         public string Symbol { get; set; } = string.Empty;
+
+        [Required]
         public string Name { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
 
         public decimal Current_Price { get; set; }
-        public decimal Market_Cap { get; set; }
+        public decimal? Market_Cap { get; set; }
         public int Market_Cap_Rank { get; set; }
         public decimal? Fully_Diluted_Valuation { get; set; }
         public decimal Total_Volume { get; set; }
@@ -37,6 +41,7 @@ namespace CoinUpWorkerService.Models
         public decimal Atl_Change_Percentage { get; set; }
         public DateTime Atl_Date { get; set; }
 
+        [NotMapped]
         public object? Roi { get; set; }
         public DateTime Last_Updated { get; set; }
 

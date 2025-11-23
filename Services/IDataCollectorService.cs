@@ -3,7 +3,9 @@ namespace CoinUpWorkerService.Services
 {
     public interface IDataCollectorService
     {
-        Task<List<MarketData>> FetchMarketDataAsync();
+        Task<List<CoinsMarket>> FetchCoinsMarketAsync();
+        Task<List<CoinsMarketCategory>> FetchMarketCategoriesAsync();
+
     }
 
 
