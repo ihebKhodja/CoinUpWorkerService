@@ -1,0 +1,12 @@
+﻿using CoinUpWorkerService.Models;
+namespace CoinUpWorkerService.Services
+{
+    public interface IDataCollectorService
+    {
+        Task<List<CoinsMarket>> FetchCoinsMarketAsync();
+        Task<List<CoinsMarketCategory>> FetchMarketCategoriesAsync();
+
+    }
+
+
+}
