@@ -5,6 +5,8 @@ namespace CoinUpWorkerService.Services
     {
         Task<List<CoinsMarket>> FetchCoinsMarketAsync();
         Task<List<CoinsMarketCategory>> FetchMarketCategoriesAsync();
+        Task<MarketChartDetails> FetchMarketChartAsync(string id);
+
 
     }
 

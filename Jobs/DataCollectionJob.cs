@@ -44,6 +44,7 @@ namespace CoinUpWorkerService.Jobs
                 // -----------------------------
                 dbContext.CoinsMarket.RemoveRange(dbContext.CoinsMarket);
                 dbContext.CoinsMarketCategory.RemoveRange(dbContext.CoinsMarketCategory);
+                dbContext.MarketChartDetails.RemoveRange(dbContext.MarketChartDetails);
 
                 await dbContext.SaveChangesAsync(); // Important to clear table before insert
 
@@ -56,6 +57,42 @@ namespace CoinUpWorkerService.Jobs
 
                 await dbContext.SaveChangesAsync();
 
+
+                // -----------------------------
+                // 4. Fetch Market Chart For Each Coin
+                // -----------------------------
+                _logger.LogInformation("Fetching market chart for {Count} coins...", coinsMarkets.Count);
+                var rateLimitMs = 2000;
+                foreach (var coin in coinsMarkets.Take(5))
+                {
+                    try
+                    {
+                        var chart = await collector.FetchMarketChartAsync(coin.Id);
+
+                        if (chart == null)
+                        {
+                            _logger.LogWarning("Market chart is null for coin {Id}", coin.Id);
+                            continue;
+                        }
+
+                        // TODO: Save chart in DB
+                        await dbContext.MarketChartDetails.AddRangeAsync(chart);
+
+                        _logger.LogInformation("Chart fetched for {Id}", coin.Id);
+                    }
+                    catch (HttpRequestException ex) when ((int?)ex.StatusCode == 429)
+                    {
+                        _logger.LogWarning("Rate limit hit. Waiting 10s before retrying...");
+                        await Task.Delay(10000);
+                    }
+
+                    // Delay between requests to avoid rate limiting
+                    await Task.Delay(rateLimitMs);
+                }
+
+
+                // If you have a MarketCharts table
+                await dbContext.SaveChangesAsync();
 
                 _logger.LogInformation("🟢 Job terminé avec succès !");
             }
