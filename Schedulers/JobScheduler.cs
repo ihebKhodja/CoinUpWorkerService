@@ -25,7 +25,8 @@ namespace CoinUpWorkerService.Schedulers
                 var job = scope.ServiceProvider.GetRequiredService<DataCollectionJob>();
 
                 _logger.LogInformation("➡️ Exécution du DataCollectionJob...");
-                await job.ExecuteAsync();
+                //await job.ExecuteGetMarketAsync();
+                await job.ExecuteGetHistoryAsync();
             }
             catch (Exception ex)
             {

@@ -13,6 +13,7 @@ namespace CoinUpWorkerService.Models
     {
         [Key]
         public string Id { get; set; }
+        public int Rank { get; set; }
 
         // JSON columns stored in database
         public string PricesJson { get; set; }

@@ -24,7 +24,8 @@ namespace CoinUpWorkerService
                 var scheduler = scope.ServiceProvider.GetRequiredService<JobScheduler>();
 
                 // Call the scheduler once; it handles the periodic execution internally
-                await scheduler.ScheduleDataCollectionJob(interval, stoppingToken);
+                //await scheduler.ScheduleDataCollectionJob(interval, stoppingToken);
+                await scheduler.ScheduleDataCollectionJobOnce();
             }
             catch (Exception ex)
             {

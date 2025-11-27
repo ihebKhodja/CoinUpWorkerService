@@ -42,8 +42,9 @@ namespace CoinUpWorkerService.Services
             var result = new List<CoinsMarket>();
 
 
-            foreach (var item in items)
+            for (int i = 0; i < items.Count; i++)
             {
+                var item = items[i];
                 result.Add(new CoinsMarket
                 {
                     Id = item.GetProperty("id").GetString() ?? "",
@@ -83,7 +84,9 @@ namespace CoinUpWorkerService.Services
                         ? roi.ValueKind == JsonValueKind.Null ? null : roi
                         : null,
 
-                    Last_Updated = item.GetProperty("last_updated").GetDateTime()
+                    Last_Updated = item.GetProperty("last_updated").GetDateTime(),
+                    Rank = i + 1,
+
                 });
             }
 
@@ -132,7 +135,7 @@ namespace CoinUpWorkerService.Services
             return result;
         }
 
-        public async Task<MarketChartDetails?> FetchMarketChartAsync(string id)
+        public async Task<MarketChartDetails?> FetchMarketChartAsync(string id, int rank)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("Id is required", nameof(id));
@@ -147,7 +150,7 @@ namespace CoinUpWorkerService.Services
                 return new MarketChartDetails
                 {
                     Id = id,
-
+                    Rank = rank,
                     Prices = ConvertToDecimalList(json.GetProperty("prices")),
                     MarketCaps = ConvertToDecimalList(json.GetProperty("market_caps")),
                     TotalVolumes = ConvertToDecimalList(json.GetProperty("total_volumes"))
