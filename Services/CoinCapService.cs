@@ -1,4 +1,4 @@
-﻿using CoinUpWorkerService.Models;
+﻿using CoinUp.Shared.Models;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -28,7 +28,7 @@ namespace CoinUpWorkerService.Services
             _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("CoinUpWorker/1.0");
 
             //_httpClient.DefaultRequestHeaders.Add("X-CG-API-KEY", _apiKey);
-            _httpClient.DefaultRequestHeaders.Add("x-cg-api-key", _apiKey);
+            _httpClient.DefaultRequestHeaders.Add("x-cg-demo-api-key", _apiKey);
         }
 
 

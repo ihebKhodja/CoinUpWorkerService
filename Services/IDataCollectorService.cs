@@ -1,4 +1,5 @@
-﻿using CoinUpWorkerService.Models;
+﻿using CoinUp.Shared.Models;
+
 namespace CoinUpWorkerService.Services
 {
     public interface IDataCollectorService

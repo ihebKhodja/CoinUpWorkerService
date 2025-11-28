@@ -1,4 +1,4 @@
-﻿using CoinUpWorkerService.Models;
+﻿using CoinUp.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoinUpWorkerService.Data
